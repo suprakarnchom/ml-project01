@@ -16,28 +16,23 @@ y = df['Outcome'].values
 # Split data
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.4, random_state=0)
 
-# find k to model
-k_neighbors =np.arange(1, 9)
-# empty array to store train and test score
-train_score = np.empty(len(k_neighbors))
-test_score = np.empty(len(k_neighbors))
+knn = KNeighborsClassifier(n_neighbors=8)
 
-for i,k in enumerate(k_neighbors):
-    knn = KNeighborsClassifier(n_neighbors=k)
-    knn.fit(x_train, y_train)
-    # วัดประสิทธิภาพ
-    train_score[i] = knn.score(x_train, y_train)
-    test_score[i] = knn.score(x_test, y_test)
+# train
+knn.fit(x_train, y_train)
 
-    print(test_score[i]*100)
+# Predict
+y_pred = knn.predict(x_test)
 
-# plt.title('Compare KNN in Model')
-# plt.plot(k_neighbors, test_score, label='Test Score')
-# plt.plot(k_neighbors, train_score, label='Train Score')
-# plt.legend()
-# plt.xlabel('Number of K Neighbors')
-# plt.ylabel('Score')
-# plt.show()
+# print(classification_report(y_test, y_pred))
+# print(confusion_matrix(y_test, y_pred))
+
+print(pd.crosstab(y_test, y_pred, rownames=['True'], colnames=['Predicted'], margins=True))
+
+
+
+
+
 
 
 
